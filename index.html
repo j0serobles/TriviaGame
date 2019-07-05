@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <!-- Content Scaling -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <meta charset="utf-8">
+        <title></title>
+        <!-- 
+        <link rel="stylesheet" href="resets.css">
+        --> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+
+    <body>
+
+        <audio id="wrong">
+            <source src="assets/media/wrong.wav" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="ding">
+              <source src="assets/media/ding.wav" type="audio/wav">
+              Your browser does not support the audio element.
+        </audio>
+        <audio id="tada">
+                <source src="assets/media/tada.wav" type="audio/wav">
+                Your browser does not support the audio element.
+        </audio>
+        <audio id="lost">
+            <source src="assets/media/lost.wav" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio>
+  
+
+
+      <div class="container h-100 bg-faded">
+
+          <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+          <![endif]-->
+
+          <div class="row h-100 mx-auto text-body">
+
+              <div id="game_area" class="col-md-12 my-auto bg-light "> 
+                
+                <div id="heading_row" class="row">
+                  <div class="col">
+                    <h1 class="text-center">Baseball Trivia Game</h1>
+                  </div>
+                </div>
+
+
+                <div id="time_row" class="row">
+                    <div class="col">
+                      <h2  class="text-center">Time remaining: </h2>
+                      </div>
+                   </div>
+
+                   
+                <div id="question_row" class="row">
+                    <div class="col">
+                      <h2  class="text-center"> Question : </h2>
+                    </div>
+                </div>
+
+                   <div id="choices_row" class="row">
+                      <div class="col">
+                        <form id="answers_form" class="mx-auto w-50 p-3 text-center">
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="Answer1">
+                              <label class="form-check-label" for="exampleRadios1">
+                                 Answer1
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="Answer2">
+                              <label class="form-check-label" for="exampleRadios2">
+                                Answer2
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="Answer3">
+                              <label class="form-check-label" for="exampleRadios3">
+                                Answer3
+                              </label>
+                          </div>
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="Answer4">
+                              <label class="form-check-label" for="exampleRadios3">
+                                Answer4
+                              </label>
+                          </div>
+                      </form>
+
+
+
+                      </div>
+                    </div>
+
+                </div>
+              </div>
+          </div>
+      <script src="assets/javascript/themes.js"></script>
+      <script src="assets/javascript/game.js"></script>
+      <script src="" async defer></script>
+      </body>
+</html>
