@@ -59,16 +59,22 @@
                   </div>
                 </div>
 
+                <div class="row">
+                  <div class="col">
+                    <h1 id="start_button" class="button" onclick="nextQuestion()">Start</h1>
+                  </div>
+                </div>
+
 
                 <div id="time_row" class="row">
                     <div class="col">
-                      <h2  class="text-center">Time remaining: </h2>
+                      <h2 id="time_remaining" class="text-center">Time remaining: 30</h2>
                       </div>
                    </div>
 
                    
                 <div id="question_row" class="row">
-                    <div class="col">
+                    <div id="current_question" class="col">
                       <h2  class="text-center"> Question : </h2>
                     </div>
                 </div>
@@ -76,41 +82,46 @@
                    <div id="choices_row" class="row">
                       <div class="col">
                         <form id="answers_form" class="mx-auto w-50 p-3 text-center">
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="Answer1">
+                          <div id="answer1" class="form-check" value="1">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1">
                               <label class="form-check-label" for="exampleRadios1">
                                  Answer1
                               </label>
                           </div>
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="Answer2">
+                          <div id="answer2" class="form-check" value="2">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2">
                               <label class="form-check-label" for="exampleRadios2">
                                 Answer2
                               </label>
                           </div>
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="Answer3">
+                          <div id="answer3" class="form-check" value="3">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3">
                               <label class="form-check-label" for="exampleRadios3">
                                 Answer3
                               </label>
                           </div>
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="Answer4">
-                              <label class="form-check-label" for="exampleRadios3">
+                          <div id="answer4" class="form-check" value="4">
+                              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4">
+                              <label class="form-check-label" for="exampleRadios4">
                                 Answer4
                               </label>
                           </div>
                       </form>
-
-
-
                       </div>
                     </div>
+
+                    <div class="row">
+                      <div id="stats_div" class="col">
+                        <h2 class="text-center">Total Correct: 0 </h2>
+                        <h2 class="text-center">Total Incorrect: 0 </h2>
+                        <h2 class="text-center">Total Unanswered: 0 </h2>
+                        </div>
+                     </div>
 
                 </div>
               </div>
           </div>
-      <script src="assets/javascript/themes.js"></script>
+      <script src="assets/javascript/trivia.js"></script>
       <script src="assets/javascript/game.js"></script>
       <script src="" async defer></script>
       </body>
