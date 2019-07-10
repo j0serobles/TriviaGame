@@ -10,7 +10,7 @@ var triviaQuestions = [
       themeName     : 'Baseball',
       imageFileName : "baseball.jpg",  
       questions     : [ {
-                         questionText    : "Who holds the record for most home runs in a season?",
+                         questionText    : "Who holds the record for most home runs?",
                          questionOptions : ["Babe Ruth", "Barry Bonds", "Mark McGuire", "Hank Aaron"],
                          correctAnswer   : 2
                         },
@@ -20,7 +20,7 @@ var triviaQuestions = [
                           correctAnswer   : 1
                          },
                          {
-                          questionText    : "What is the distance between the pitchers mound and home plate?",
+                          questionText    : "The distance between the pitcher's mound and home plate is: ",
                           questionOptions : ["60 feet", "55 feet", "60 feet, 6 inches", "75 feet"],
                           correctAnswer   : 3
                          },
@@ -30,9 +30,9 @@ var triviaQuestions = [
                           correctAnswer   : 1
                          },
                          {
-                          questionText    : "Which pitcher holds the record for struck out batters in MLB history?",
+                          questionText    : "Which pitcher holds the record for most struck out batters in MLB history?",
                           questionOptions : ["Roger Clemens", "Tom Seaver", "Nolan Ryan", "Randy Johnson"],
-                          correctAnswer   : 0
+                          correctAnswer   : 3
                          },
                        
                      ]

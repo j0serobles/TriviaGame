@@ -66,12 +66,39 @@ function UI() {
 
   this.showQuestion = function() {
 
+    // document.getElementById("answer1").enabled=true;
+    // document.getElementById("answer2").enabled=true;
+    // document.getElementById("answer3").enabled=true;
+    // document.getElementById("answer4").enabled=true;
+
     //Remove background color from correct answer
 
-    $("#answer1").removeClass("bg-info"); 
-    $("#answer2").removeClass("bg-info");
-    $("#answer3").removeClass("bg-info");
-    $("#answer4").removeClass("bg-info");
+    $("#answer1").removeClass("bg-success"); 
+    $("#answer2").removeClass("bg-success");
+    $("#answer3").removeClass("bg-success");
+    $("#answer4").removeClass("bg-success");
+
+    $("#answer1").removeClass("bg-danger"); 
+    $("#answer2").removeClass("bg-danger");
+    $("#answer3").removeClass("bg-danger");
+    $("#answer4").removeClass("bg-danger");
+
+
+    $("#answers_form").show();
+    $("#answers_form").removeClass("invisible");
+    $("#answers_form").addClass("visible");
+
+    $("#current_question").removeClass("invisible");
+    $("#current_question").addClass("visible");
+    
+    $("#time_remaining").removeClass("invisible");
+    $("#time_remaining").addClass("visible");
+
+    $("#start_button").removeClass("visible");
+    $("#start_button").addClass("invisible");
+
+    $("#stats_div").removeClass("visible"); 
+    $("#stats_div").addClass("invisible"); 
 
     $("#current_question").html('<h2  class="text-center"> Question : ' + 
     currentTheme.questions[currentGame.currentQuestionIndex].questionText + '</h2> ');
@@ -88,6 +115,9 @@ function UI() {
     $("#answer4").html('<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4"> <label class="form-check-label" for="exampleRadios4">'+
     currentTheme.questions[currentGame.currentQuestionIndex].questionOptions[3]                              +
     '</label>');
+
+
+    
   }
 
   this.showAnswer = function() {
@@ -95,17 +125,30 @@ function UI() {
     //Display correct answer in a green background.
 
     var correctAnswerDiv = "#answer" + currentTheme.questions[currentGame.currentQuestionIndex].correctAnswer;
-    $(correctAnswerDiv).addClass("bg-info"); 
+    $(correctAnswerDiv).addClass("bg-success"); 
 
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////
   this.showStats = function() {
+
       if (currentGame.gameState === "ended") { 
         $("#stats_div").html('<h2 class="text-center">Total Correct: '          + currentGame.totalCorrect    +
                             '</h2> <h2 class="text-center">Total Incorrect: '  + currentGame.totalIncorrect  + 
                             '</h2> <h2 class="text-center">Total Unanswered: ' + currentGame.totalUnanswered +
                             '</h2>');
+
         $("#current_question").html('<h2  class="text-center"> Game Ended. </h2> ');
+     
+        $("#answers_form").hide(); 
+     
+        $("#stats_div").removeClass("invisible"); 
+        $("#stats_div").addClass("visible"); 
+
+              //Hide the "start" button
+      $("#start_button").removeClass("invisible");
+      $("#start_button").addClass("visible");
+      $("#start_button").text("Start again");
       }
   }
 
@@ -117,6 +160,7 @@ function UI() {
     $("#time_remaining").html("Time Remaining : " + currentGame.timeRemaining + " seconds."); 
   
   }
+
 
 }
 
@@ -206,23 +250,7 @@ function Game(theme) {
   //     userInterface.showQuestion(); 
   //   }
     
-  // } 
-  //////////////////////////////////////////////////////////////
-  // Called when user clicks on an answer during an active game.
-  // parameter answerIndex is the index of the answer chosen.
-  //////////////////////////////////////////////////////////////
-  this.checkAnswer = function(answerIndex) {
-    
-    if (this.gameState === "started") {
-     
-      if (answerIndex == currentGame.currentQuestion.correctAnswer) {
-         //Choice is correct. After 5 seconds, play next question.
-         setTimeout(this.playGame, 5000);
-       }
-
-    }
-
-  }
+  // }
   
 
   //////////////////////////////////////////////////////////////////////
@@ -258,19 +286,38 @@ $( document ).ready( function() {
  currentGame   = new Game(currentTheme); 
  userInterface = new UI(); 
 
- $("#answer1,#answer2,#answer3,#answer4").on("click", function() { 
-   currentGame.checkAnswer( $(this).attr("value"));
+ $("#answer1,#answer2,#answer3,#answer4").on("click", function() {
+   //Hide the countdown 
+   $("#time_remaining").removeClass("visible");
+   $("#time_remaining").addClass("invisible");
+   if (currentGame.gameState === "started") {   //Only do this during active game.
+    currentGame.gameState = "paused";
+    userInterface.showAnswer(); 
+    if ($(this).attr("value") != currentGame.currentQuestion.correctAnswer) {
+      currentGame.totalIncorrect++;
+      $(this).addClass("bg-danger"); 
+    }
+    else {
+      currentGame.totalCorrect++;
+    }
+    setTimeout(nextQuestion, 5000);
+  }
  });
-
-
 });
 
 ////////////////////////////////////////////////////////////////////
  function nextQuestion() {
 
-    if (currentGame.gameState === "notStarted") {
+    if (currentGame.gameState === "notStarted") {  //It is the first game played.
       currentGame.gameState = "started"; 
       gameInterval = setInterval(counter, 1000); 
+      currentGame.currentQuestionIndex = -1;
+      currentGame.totalCorrect    = 0;
+      currentGame.totalIncorrect  = 0;
+      currentGame.totalUnanswered = 0;
+   }
+   else if (currentGame.gameState === "paused") {
+     currentGame.gameState = "started";
    }
 
   // Choose the next question:
@@ -284,8 +331,11 @@ $( document ).ready( function() {
   else {
     //Still not reached the last question, continue.
     currentGame.currentQuestion = currentTheme.questions[currentGame.currentQuestionIndex]; 
+    $("#time_remaining").removeClass("invisible");
+    $("#time_remaining").addClass("visible");
      //Update interface
      userInterface.showQuestion(); 
+     currentGame.timeRemaining = 15;
   }
   
 
@@ -301,10 +351,12 @@ $( document ).ready( function() {
     // Increase the count of unanswered questions,
     // reset the timeRemaining back to 30 seconds  
     // and go to the next question after 5 seconds.
+    $("#time_remaining").removeClass("visible");
+    $("#time_remaining").addClass("invisible");  //Hide the countdown until next question.
     userInterface.showAnswer();
     currentGame.totalUnanswered++; 
     currentGame.timeRemaining = 15;
-    setTimeout(nextQuestion, 5000);
+    setTimeout(nextQuestion, 1000);
   }
   else if (currentGame.timeRemaining > 0) {
     //Timer not expired. Refresh time remaining text.
