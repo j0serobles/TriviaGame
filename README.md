@@ -29,15 +29,15 @@ The Javascript program is divided in three sections:
 2. OBJECTS: Contains the source code for two object constructors:
  * UI (User Interface)
  * Game (The actual game)
-3. CALLS: Contains the call to add an event listener in the document object that will execute the Game.playGame() method - Where everything starts. 
+3. CALLS: Contains the function calls to drive the program execution.
 
-The game goes through the following steps when played:
-1. Render the initial HTML page (load)
-2. Accept an input key from the user to start a game and chooses a secret word from the theme.
-3. Accept a new input key (alphanumeric) and matches it against a character in the secret word.  If a match is found, the number of 'hits' is incremented and the key is stored in an array.  If the character is not matched to a letter in the secret word, the number of misses is incremented and the number of allowed tries to guess the secret word is decremented. 
-All characters ever attempted (either hit or miss) are stored into another array.
-4. The UI (user Interface) object is called to update the elements of the HTML page (DOM) with the current secret word (showing those characters that have been guessed), the number attempts remaining, the list of typed characters, the number of games won and the number of games lost. 
-5. Steps 3 and 4 are repeated until :
-	* The number of attempts remaining goes to zero : The game is lost.
-	* All the letters are guessed before the number of attempts goes to zero: The game is won.
-6. When the game completes, the User Interface object is called to update the HTML page once again and wait for the next key to be typed in, which restarts the game at step two.
+The game is started after the page loads and the user clicks on the "Start" button.
+Each question page shows the timer countdown (default time is 30 seconds), the actual question itself,
+and four clickable choices.
+Using the $.ready() function, a callback function is attached to each choice when the DOM is loaded. 
+This callback function evaluates the answer selected by the user, updates the counters and provides
+feedback to the user if the answer was answered correctly or not.
+setInterval() is called when the first question is displayed, decreasing the countdown every second.
+The interval is only cleared after the last question is asked.  When a new question is displayed, 
+the countdown is reset to 30 seconds and is decreased every second by the interval's callback. 
+After the last question is displayed and answered (or not), the game ends and the totals are displayed.  The user can then restart the game by clicking on the "Start Again" button. 

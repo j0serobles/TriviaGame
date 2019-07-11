@@ -34,6 +34,11 @@ var triviaQuestions = [
                           questionOptions : ["Roger Clemens", "Tom Seaver", "Nolan Ryan", "Randy Johnson"],
                           correctAnswer   : 3
                          },
+                         {
+                          questionText    : "The team with the most world series wins is:",
+                          questionOptions : ["Boston Red Sox", "St. Louis Cardinals", "New York Yankees", "Los Angeles Dodgers"],
+                          correctAnswer   : 3
+                         },
                        
                      ]
     },

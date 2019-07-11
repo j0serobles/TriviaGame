@@ -4,6 +4,10 @@
 //TODO: Implement user-selectable themes.
 
 var currentTheme = triviaQuestions[0];
+var currentGame   = null; 
+var userInterface = null;
+var currentTheme  = null; 
+var gameInterval  = null;
 
 ///////////////////////////////////////////////////////////////////////////
 // Constructor for UI object
@@ -30,46 +34,10 @@ function UI() {
   // Methods
   ////////////////////////////////
  
-  this.updatePageElements = function() {
-
-    if (currentGame.gameState === "ended") { 
-      $("#stats_div").html('<h2 class="text-center">Total Correct: '          + currentGame.totalCorrect    +
-                           '</h2> <h2 class="text-center">Total Incorrect: '  + currentGame.totalIncorrect  + 
-                           '</h2> <h2 class="text-center">Total Unanswered: ' + currentGame.totalUnanswered +
-                           '</h2>');
-      $("#current_question").html('<h2  class="text-center"> Game Ended. </h2> ');
-    }
-    else if (currentGame.gameState === "started") {
-
-       $("#current_question").html('<h2  class="text-center"> Question : ' + 
-                                   currentTheme.questions[currentGame.currentQuestionIndex].questionText + '</h2> ');
-       //Display each answer in its div element
-       $("#answer1").html =('<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"' +
-                            'value="Answer1"><label class="form-check-label" for="exampleRadios1">'                 +
-                            currentTheme.questions[currentGame.currentQuestionIndex][0]                             +
-                             '</label>');
-      $("#answer2").html =('<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"' +
-                            'value="Answer1"><label class="form-check-label" for="exampleRadios1">'                +
-                            currentTheme.questions[currentGame.currentQuestionIndex][1]                            +
-                            '</label>');
-      $("#answer3").html =('<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"' +
-                          'value="Answer1"><label class="form-check-label" for="exampleRadios1">'                  +
-                          currentTheme.questions[currentGame.currentQuestionIndex][2]                              +
-                           '</label>');
-        $("#answer4").html =('<input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"' +
-                            'value="Answer1"><label class="form-check-label" for="exampleRadios1">'                  +
-                            currentTheme.questions[currentGame.currentQuestionIndex][3]                              +
-                            '</label>');
-                    
-    }
-  }
-
+  ////////////////////////////////
+  // Called to display a question.
+  ////////////////////////////////
   this.showQuestion = function() {
-
-    // document.getElementById("answer1").enabled=true;
-    // document.getElementById("answer2").enabled=true;
-    // document.getElementById("answer3").enabled=true;
-    // document.getElementById("answer4").enabled=true;
 
     //Remove background color from correct answer
 
@@ -78,6 +46,7 @@ function UI() {
     $("#answer3").removeClass("bg-success");
     $("#answer4").removeClass("bg-success");
 
+    //Remove background color from incorrect answer.
     $("#answer1").removeClass("bg-danger"); 
     $("#answer2").removeClass("bg-danger");
     $("#answer3").removeClass("bg-danger");
@@ -116,9 +85,11 @@ function UI() {
     currentTheme.questions[currentGame.currentQuestionIndex].questionOptions[3]                              +
     '</label>');
 
-    
   }
 
+  ////////////////////////////////////////////////////////////////////
+  // Called when the user clicks on an answer to show the correct one.
+  ////////////////////////////////////////////////////////////////////
   this.showAnswer = function() {
 
     //Display correct answer in a green background.
@@ -127,7 +98,9 @@ function UI() {
     $(correctAnswerDiv).addClass("bg-success"); 
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////
+  // Called after the last question is asked to show the results
+  ////////////////////////////////////////////////////////////////////
   this.showStats = function() {
 
       if (currentGame.gameState === "ended") { 
@@ -159,29 +132,7 @@ function UI() {
   
   }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -190,9 +141,6 @@ function UI() {
 // for playing the Word-Guess game.  Its constructor gets passed a 
 // theme[] global array.
 // (This version only uses one theme)
-// Pressing any key starts the game and subsequent key presses call the
-// playGame() function to match the entered key to a letter in the secret
-// word selected by the computer randomly. 
 ///////////////////////////////////////////////////////////////////////////
 function Game(theme) {
 
@@ -213,44 +161,6 @@ function Game(theme) {
   this.totalIncorrect  = 0;
   this.totalUnanswered = 0;
 
-  /////////////////////////
-  // Methods:
-  /////////////////////////
-
-  // /////////////////////////////////////////////////////////////////////////////
-  // // playGame gets called when a new question is posed, and waits for input. 
-  // /////////////////////////////////////////////////////////////////////////////
-  //   this.playGame = function(theGame) {
- 
-  //   if (theGame.gameState === "ended") {
-  //     //The game has ended, reset it and start a new one
-  //     console.log("Game Ended");
-  //   }
-  //   else {
-
-  //     if (theGame.gameState === "notStarted") {
-  //       theGame.gameState = "started"; 
-  //     }
-
-  //     // Choose the next question:
-  //     theGame.currentQuestionIndex++
-  //     if (theGame.currentQuestionIndex === theGame.questions.length){
-  //       //Last question has been displayed.  End this game.
-  //       theGame.endTheGame();
-  //     }
-  //     else {
-  //       //Still not reached the last question, continue.
-  //       theGame.currentQuestion = currentTheme.questions[theGame.currentQuestionIndex++];
-  //     }
-      
-  //     //Update interface
-  //     // userInterface.updatePageElements();
-  //     userInterface.showQuestion(); 
-  //   }
-    
-  // }
-  
-
   //////////////////////////////////////////////////////////////////////
   // endTheGame 
   // Ends the game, set state variable.
@@ -267,42 +177,41 @@ function Game(theme) {
 
 //CALLS:
 /////////////////////////////////////////////////////////////////////////////////////////////
-// When page is loaded, create the game and wait for a key input.
+// Code executed as soon as DOM is ready.
 
-
-
-var currentGame   = null; 
-var userInterface = null;
-var currentTheme  = null; 
-var gameInterval  = null;
-
-
-////////////////////////////////////////////////////////////////////
 $( document ).ready( function() { 
 
- currentTheme  = triviaQuestions[0]; // Use fixed theme, for now. 
- currentGame   = new Game(currentTheme); 
- userInterface = new UI(); 
+ currentTheme  = triviaQuestions[0];     // Use fixed theme, for now. 
+ currentGame   = new Game(currentTheme); // The "Game" object.
+ userInterface = new UI();               // The "view" object. 
+
+ //On page load, attach an onClick() method to each "answer" div
+ //That evaluates if the user clicked in the correct answer. 
 
  $("#answer1,#answer2,#answer3,#answer4").on("click", function() {
-   //Hide the countdown 
+
+   //Hide the countdown after an answer is clicked on
    $("#time_remaining").removeClass("visible");
    $("#time_remaining").addClass("invisible");
+  
    if (currentGame.gameState === "started") {   //Only do this during active game.
     currentGame.gameState = "paused";
-    userInterface.showAnswer(); 
+    userInterface.showAnswer();  //Show the correct answer after clicking on one.
+
     if ($(this).attr("value") != currentGame.currentQuestion.correctAnswer) {
+      //The clicked on answer is incorrect.
       currentGame.totalIncorrect++;
       $(this).addClass("bg-danger"); 
     }
     else {
+      //The clicked-on answer is correct
       currentGame.totalCorrect++;
     }
-    setTimeout(nextQuestion, 10000);
+    setTimeout(nextQuestion, 3000);
   }
  });
+ 
 });
-
 ////////////////////////////////////////////////////////////////////
  function nextQuestion() {
 
@@ -329,17 +238,26 @@ $( document ).ready( function() {
   else {
     //Still not reached the last question, continue.
     currentGame.currentQuestion = currentTheme.questions[currentGame.currentQuestionIndex]; 
+    //Reset countdown to 30 seconds:
+    currentGame.timeRemaining = 30;
+    //Show the countdown (it gets updated in the counter() function)
     $("#time_remaining").removeClass("invisible");
     $("#time_remaining").addClass("visible");
+
+    userInterface.refreshCountdown();
+
      //Update interface
-     userInterface.showQuestion(); 
-     currentGame.timeRemaining = 30;
+     userInterface.showQuestion();   
   }
   
-
-
  }
  ///////////////////////////////////////////////////////////////////
+ // counter() is the call back for setInterval() after the user 
+ // clicks on the"start" button.  
+ // It ends the current question and calls nextQuestion() if
+ // the countdown goes to 0.  If the countdown has not reached 0,
+ // it refreshes the countdown div. 
+ 
  function counter() { 
 
   currentGame.timeRemaining--;
@@ -354,7 +272,7 @@ $( document ).ready( function() {
     userInterface.showAnswer();
     currentGame.totalUnanswered++; 
     // currentGame.timeRemaining = 30;
-    setTimeout(nextQuestion, 1000);
+    setTimeout(nextQuestion, 3000);
   }
   else if (currentGame.timeRemaining > 0) {
     //Timer not expired. Refresh time remaining text.
