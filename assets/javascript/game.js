@@ -116,7 +116,6 @@ function UI() {
     currentTheme.questions[currentGame.currentQuestionIndex].questionOptions[3]                              +
     '</label>');
 
-
     
   }
 
@@ -126,7 +125,6 @@ function UI() {
 
     var correctAnswerDiv = "#answer" + currentTheme.questions[currentGame.currentQuestionIndex].correctAnswer;
     $(correctAnswerDiv).addClass("bg-success"); 
-
   }
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +298,7 @@ $( document ).ready( function() {
     else {
       currentGame.totalCorrect++;
     }
-    setTimeout(nextQuestion, 5000);
+    setTimeout(nextQuestion, 10000);
   }
  });
 });
@@ -308,7 +306,7 @@ $( document ).ready( function() {
 ////////////////////////////////////////////////////////////////////
  function nextQuestion() {
 
-    if (currentGame.gameState === "notStarted") {  //It is the first game played.
+    if (currentGame.gameState === "notStarted" || currentGame.gameState === "ended") {
       currentGame.gameState = "started"; 
       gameInterval = setInterval(counter, 1000); 
       currentGame.currentQuestionIndex = -1;
@@ -335,7 +333,7 @@ $( document ).ready( function() {
     $("#time_remaining").addClass("visible");
      //Update interface
      userInterface.showQuestion(); 
-     currentGame.timeRemaining = 15;
+     currentGame.timeRemaining = 30;
   }
   
 
@@ -355,7 +353,7 @@ $( document ).ready( function() {
     $("#time_remaining").addClass("invisible");  //Hide the countdown until next question.
     userInterface.showAnswer();
     currentGame.totalUnanswered++; 
-    currentGame.timeRemaining = 15;
+    // currentGame.timeRemaining = 30;
     setTimeout(nextQuestion, 1000);
   }
   else if (currentGame.timeRemaining > 0) {

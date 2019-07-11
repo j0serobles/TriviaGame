@@ -15,7 +15,7 @@ var triviaQuestions = [
                          correctAnswer   : 2
                         },
                         {
-                          questionText    : "What is the real name of the player nicknamed 'Charlie Hustle'",
+                          questionText    : "Which player was nicknamed 'Charlie Hustle'",
                           questionOptions : ["Pete Rose", "Babe Ruth", "Ted Williams", "Reggie Jackson"],
                           correctAnswer   : 1
                          },
